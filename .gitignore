@@ -1,0 +1,16 @@
+# our file bs
+extractedassets
+generatedarticles
+items.txt
+recipes.txt
+
+# virtual environment file bs
+venv
+.venv
+
+# pywikibot's file bs
+logs
+apicache
+throttle.ctrl
+pywikibot-*.lwp
+user-config.py
