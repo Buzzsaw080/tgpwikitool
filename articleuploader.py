@@ -6,7 +6,7 @@ site = pywikibot.Site('en','local')
 
 articles = os.listdir('generatedarticles')
 
-print("Uploading item articles...")
+print("Uploading articles...")
 print("This is gonna take a while")
 
 index = 0
