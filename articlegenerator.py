@@ -18,6 +18,10 @@ def parse_litedb_dump(filename:str):
     parsed_dump:list[dict[str]] = []
     for item_string in separated_dump:
         try:
+            if item_string == "":
+                # Empty strings are probably just the beginning and end
+                # can be ignored
+                continue
             item = json.loads(item_string)
             parsed_dump.append(item)
         except json.JSONDecodeError:
