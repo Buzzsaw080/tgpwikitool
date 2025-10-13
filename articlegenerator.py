@@ -19,9 +19,6 @@ def parse_litedb_dump(filename:str):
     for item_string in separated_dump:
         try:
             item = json.loads(item_string)
-            if "PLACEHOLDER" in item['Name']:
-                print("Skipping placeholder item")
-                continue
             parsed_dump.append(item)
         except json.JSONDecodeError:
             print("ERROR: Failed to decode an item")
