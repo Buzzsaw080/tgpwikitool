@@ -9,14 +9,21 @@ argument_parser = ArgumentParser(
 )
 
 argument_parser.add_argument(
-    "--force", "-f",
+    "-f", "--force",
     action='store_true',
-    help="overwrite articles that already exist instead of skipping them",
+    help="overwrite articles that already exist instead of skipping them,"
+        + " will remove any user made changes",
+)
+
+argument_parser.add_argument(
+    "family",
+    help="The family to upload articles to, available families are"
+        + " specified in user-config.py"
 )
 
 cmd_args = argument_parser.parse_args()
 
-site = pywikibot.Site('en','local')
+site = pywikibot.Site('en',cmd_args.family)
 
 articles = os.listdir('generatedarticles')
 
@@ -34,8 +41,13 @@ for article in articles:
         print("Use --force to overwrite the article anyways")
         continue
     
+    old_page_text = page.text
     with open(os.path.join('generatedarticles',article)) as f:
         page.text = f.read()
+    
+    if old_page_text == page.text:
+        print("Skipping because the existing article is the same as the new one")
+        continue
 
     page.save(
         "Auto generated article using TGPWikiTool", # Change title
