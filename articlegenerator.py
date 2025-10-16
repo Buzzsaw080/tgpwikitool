@@ -14,7 +14,10 @@ class StrifeKind():
         self.id = f"kind:{self.kind}"
 
     def as_wiki_link(self):
-        return f"[[:Category:{self.kind}kind]]"
+        return f"[[:Category:{self.kind}kind | Any {self.kind}kind item]]"
+
+    def __str__(self):
+        return f"{self.kind}kind"
 
 
 @dataclass
@@ -26,7 +29,10 @@ class ItemTag():
         self.id = f"tag:{self.tag}"
 
     def as_wiki_link(self):
-        return f"[[:Category:{self.tag}]]"
+        return f"[[:Category:{self.tag} | Any {self.tag} item]]"
+
+    def __str__(self):
+        return self.tag
 
 
 @dataclass
