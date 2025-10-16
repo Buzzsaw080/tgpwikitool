@@ -113,7 +113,7 @@ def parse_litedb_dump(filename:str) -> list[dict[str]]:
     print("Converting to list...")
     # match item separators like /* 5 */, inbetween which is just
     # normal JSON that we can parse
-    separated_dump:list[str] = re.split('/\\* \d+ \\*/',raw_dump)
+    separated_dump:list[str] = re.split('/\\* \\d+ \\*/',raw_dump)
     print(f"Got {len(separated_dump)} items")
 
     print("Parsing...")
