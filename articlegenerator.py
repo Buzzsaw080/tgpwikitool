@@ -48,7 +48,11 @@ class Item():
         self.spawnable = item_dict.get('Spawn',False)
         self.tags = item_dict.get('Tags',[])
         self.aliases = item_dict.get('Aliases',[])
-        self.strifekind = StrifeKind(kind=item_dict.get('Strifekind'))
+        
+        # prevents Nonekind from showing up
+        strifekind = item_dict.get('Strifekind')
+        if strifekind:
+            self.strifekind = StrifeKind(kind=strifekind)
     
     def as_wiki_link(self):
         return f"[[{self.name}]]"
