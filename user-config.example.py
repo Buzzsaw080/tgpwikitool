@@ -1,6 +1,5 @@
 family_files['local'] = "http://localhost/mediawiki/api.php"
-family_files['tgpwiki'] = "http://"
+usernames['local']['en'] = 'TGPWikiTool'
 family = 'local'
 mylang = 'en'
-usernames['local']['en'] = 'TGPWikiTool'
 password_file = None
