@@ -63,6 +63,9 @@ class Item():
     def as_wiki_link(self):
         return f"[[{self.name}]]"
 
+    def __str__(self):
+        return self.name
+
 
 @dataclass
 class ItemAlias(Item):
@@ -71,9 +74,9 @@ class ItemAlias(Item):
     def as_wiki_link(self):
         return f"[[{self.name}]]"
 
-    def __init__(self,base:Item,aliasID:str):
-        self.__dict__.update(base.__dict__)
-        self.aliasName = aliasID
+    def __init__(self,*args,**kwargs):
+        self.aliasName = kwargs.pop('aliasName')
+        super().__init__(*args,**kwargs)
 
 
 @dataclass
@@ -82,6 +85,11 @@ class Recipe():
     method:str = "&&"
     itemB:Union[Item, StrifeKind, ItemTag] = None
     result:Item = None
+
+
+def write_to_article(filename:str,content:str):
+    with open(os.path.join("generatedarticles",filename),"w") as f:
+        f.write(content)
 
 
 def safe_append_to_sublist(dictionary:dict[str,list],key:str,value):
@@ -155,15 +163,32 @@ def create_recipe_table(recipes:list[Recipe]) -> str:
 !Item B
 !Result
 '''
+    recipes.sort(key=lambda recipe: recipe.result.name)
     for recipe in recipes:
         table += '|-\n'
         table += f'|{recipe.itemA.as_wiki_link()}\n'
-        table += f'|{recipe.method}\n'
+        table += f'|<nowiki>{recipe.method}</nowiki>\n'
         table += f'|{recipe.itemB.as_wiki_link()}\n'
         table += f'|{recipe.result.as_wiki_link()}\n'
     table += "|}\n"
     
     return table
+
+
+def table_row(title:str,value:str) -> str:
+    if not value:
+        # nothing to add, do nothing
+        return ""
+    
+    if isinstance(value,list):
+        # Change to comma separated
+        value = ",".join(value)
+
+    row = f"|{title}\n"
+    row += f"|{value}\n"
+    row += "|+\n"
+
+    return row
 
 
 if __name__ == "__main__":
@@ -187,7 +212,7 @@ if __name__ == "__main__":
         good_item = Item(item)
         items[item['_id']] = good_item
         for alias in good_item.aliases:
-            items[alias] = ItemAlias(good_item,alias)
+            items[alias] = ItemAlias(item,aliasName=alias)
 
     for recipe in recipes_list:
         try:
@@ -205,7 +230,12 @@ if __name__ == "__main__":
             safe_append_to_sublist(reverse_recipes, good_recipe.itemB.id, good_recipe)
         except KeyError as e:
             print(f"Recipe for {recipe['Result']['_id']} failed because of an invalid item {e.args[0]}")
- 
+    
+    # because im gonna re-use the names later in what is perhaps the most
+    # horrible case of variable naming imaginable
+    del items_list
+    del recipes_list
+
     print("Writing articles...")
     for item in items.values():
         if isinstance(item,Item):
@@ -213,6 +243,15 @@ if __name__ == "__main__":
             article = f"[[File:{item.name}.png|300x300px]]\n\n"
             # Item description
             article += f"''\"{item.description}\"''\n"
+
+            # General item information
+            article += "{| class='wikitable'\n"
+            article += table_row("ID",item.id)
+            article += table_row("Grist",item.grist)
+            article += table_row("Tags",item.tags)
+            article += table_row("Strifekind",item.strifekind)
+            article += table_row("Aliases",item.aliases)
+            article += "|}\n\n"
 
             # Recipes
             if recipes.get(item.id):
@@ -237,18 +276,23 @@ if __name__ == "__main__":
             articletitle = item.name
         
         elif isinstance(item,ItemAlias):
+            # doesn't seem to be working
+            print(f"Created a redirect. {item.aliasName} -> {item.name}")
             article = f"#REDIRECT {item.as_wiki_link()}"
-            articletitle = item.aliasID
+            articletitle = item.aliasName
+        
+        write_to_article(articletitle,article)
+    
+    # Make a page with all the recipes
 
+    # holy variable naming
+    all_recipes_list = []
+    # this is a *different* recipes list
+    for recipes_list in recipes.values():
+        all_recipes_list += recipes_list
 
-        try:
-            with open(os.path.join("generatedarticles",item.name),"w") as f:
-                f.write(article)
-        except Exception as e:
-            if isinstance(e,KeyboardInterrupt):
-                # The user should be able to exit
-                raise e
-            print("ERROR: Failed to make an article")
+    recipes_article = create_recipe_table(all_recipes_list)
+    write_to_article("Recipes",recipes_article)
 
     print("""Completed!
 You may preview the generated articles in the folder named "generatedarticles"
