@@ -182,7 +182,7 @@ def table_row(title:str,value:str) -> str:
     
     if isinstance(value,list):
         # Change to comma separated
-        value = ",".join(value)
+        value = ", ".join(value)
 
     row = f"|{title}\n"
     row += f"|{value}\n"
