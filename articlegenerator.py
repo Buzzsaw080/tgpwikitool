@@ -238,7 +238,10 @@ if __name__ == "__main__":
 
     print("Writing articles...")
     for item in items.values():
-        if isinstance(item,Item):
+        if isinstance(item,ItemAlias):
+            article = f"#REDIRECT {item.as_wiki_link()}"
+            articletitle = item.aliasName
+        elif isinstance(item,Item):
             # Image at top of page
             article = f"[[File:{item.name}.png|300x300px]]\n\n"
             # Item description
@@ -274,12 +277,6 @@ if __name__ == "__main__":
                 article += "[[Category:Craftable]] "
             
             articletitle = item.name
-        
-        elif isinstance(item,ItemAlias):
-            # doesn't seem to be working
-            print(f"Created a redirect. {item.aliasName} -> {item.name}")
-            article = f"#REDIRECT {item.as_wiki_link()}"
-            articletitle = item.aliasName
         
         write_to_article(articletitle,article)
     
