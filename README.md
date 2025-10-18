@@ -58,12 +58,16 @@ Once you have your user-config file you can run articleuploader.py, it takes two
 ### Getting the item data yourself
 Although i do provide premade articles and item files, if you want to get the data yourself, you can (like if a later version of TGP comes out and i haven't updated)
 [LiteDB studio](https://github.com/litedb-org/LiteDB.Studio) is used to get item and recipe data, so download and run it and then click connect
+
 <img width="431" height="277" alt="An arrow pointing to the connect button" src="https://github.com/user-attachments/assets/8363e8dd-4f80-422d-bf41-7d2243e7853a" />  
+
 Then in the popup that appears,
 1. Open the items.ldb file located in `The Genesis Project_Data/StreamingAssets/items.ldb` in the genesis project files (click browse local files in steam)
 2. Turn it on read only
-3. Click connect  
+3. Click connect
+
 <img width="608" height="472" alt="image" src="https://github.com/user-attachments/assets/c3b7634b-3e0f-486f-ae4d-16ec05df39ea" />  
+
 Once connected,  
 1. Type `SELECT $ FROM LDBItem LIMIT 90000;` into the query field  
 2. Click run and wait for it to finish (unfreeze)  
@@ -71,7 +75,9 @@ Once connected,
 4. Copy all the text that shows up (ctrl+a ctrl+c)  
 5. Paste the text into a new file called `items.txt` in the same folder as tgpwikitool
 6. Repeat steps 1-5 but replace `LDBItem` with `LDBRecipe` and `items.txt` with `recipes.txt`
+   
 <img width="877" height="572" alt="image" src="https://github.com/user-attachments/assets/0acdbfe7-416f-47c7-af93-d168840ab0b2" />
+
 Then run `python articlegenerator.py` which should only take a second or two and generate all the articles, you are now free to [upload the articles](#uploading-articles)  
 
 ## Contributing
