@@ -65,13 +65,12 @@ class Item():
         # why is the damage number called grist? dunno, don't care because
         # i already worked it out
         self.damage = item_dict.get('Grist',0)
-        self.spawnable = item_dict.get('Spawn',False)
-        self.tags = item_dict.get('Tags',[])
-        self.aliases = item_dict.get('Aliases',[])
         # genuinely just guessing that if there isn't a spawn key on the item
         # then it's unspawnable, from what i can tell there is a spawn key on
         # every item so it's probably fine
-        self.spawn = item_dict.get('Spawn',False)
+        self.spawnable = item_dict.get('Spawn',False)
+        self.tags = item_dict.get('Tags',[])
+        self.aliases = item_dict.get('Aliases',[])
         self.speed = item_dict.get("Speed")
         
         # prevents Nonekind from showing up
@@ -321,6 +320,9 @@ if __name__ == "__main__":
             
             if item_recipes:
                 article += "[[Category:Craftable]] "
+            
+            if item.spawnable:
+                article += "[[Category:Spawnable]] "
             
             articletitle = item.name
         
