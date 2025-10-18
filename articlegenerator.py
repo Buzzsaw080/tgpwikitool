@@ -289,7 +289,7 @@ if __name__ == "__main__":
         all_recipes_list += recipes_list
 
     recipes_article = create_recipe_table(all_recipes_list)
-    write_to_article("Recipes",recipes_article)
+    write_to_article("List of Recipes",recipes_article)
 
     print("""Completed!
 You may preview the generated articles in the folder named "generatedarticles"
