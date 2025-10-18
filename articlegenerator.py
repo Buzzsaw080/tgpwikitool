@@ -4,6 +4,14 @@ import json
 import os
 import re
 
+ARMORKINDS:list[str] = [
+    "hat",
+    "face",
+    "shirt",
+    "pants",
+    "shoes",
+]
+
 
 @dataclass
 class StrifeKind():
@@ -47,6 +55,7 @@ class Item():
     strifekind:StrifeKind = None
     spawn:bool = None
     speed:int = None
+    armor:bool = False
 
 
     def __init__(self,item_dict:dict[str]):
@@ -69,6 +78,9 @@ class Item():
         strifekind = item_dict.get('Strifekind')
         if strifekind:
             self.strifekind = StrifeKind(kind=strifekind)
+        
+        if self.strifekind and self.strifekind.kind.lower() in ARMORKINDS:
+            self.armor = True
     
     def as_wiki_link(self):
         return f"[[{self.name}]]"
@@ -273,8 +285,11 @@ if __name__ == "__main__":
             # General item information
             article += "{| class='wikitable'\n"
             article += table_row("ID",item.id)
-            article += table_row("Damage",item.damage)
-            article += table_row("Speed",item.speed)
+            article += table_row("Defense" if item.armor else "Damage",item.damage)
+            # i dont think speed has an effect on non-shoekind items because it doesn't
+            # show in game, but i could be wrong, hopefully not
+            if not (item.armor and item.strifekind.kind == "shoes"):
+                article += table_row("Speed",item.speed)
             article += table_row("Tags",item.tags)
             article += table_row("Strifekind",item.strifekind)
             article += table_row("Aliases",item.aliases)
@@ -291,12 +306,19 @@ if __name__ == "__main__":
                 article += create_recipe_table(reverse_recipes[item.id])
 
             # Categories
-            article += "[[Category:Items]] "
+            # i may have gone a bit overboard with the categories but they're useful
+            article += "[[Category:Item]] "
             for tag in item.tags:
                 article += f"[[Category:{tag}]] "
+            
             if item.strifekind:
                 article += "[[Category:Strife]] "
                 article += f"[[Category:{item.strifekind.kind}kind]] "
+                if item.armor:
+                    article += "[[Category:Armor]] "
+                else:
+                    article += "[[Category:Weapon]]"
+            
             if item_recipes:
                 article += "[[Category:Craftable]] "
             
