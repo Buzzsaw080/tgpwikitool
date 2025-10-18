@@ -284,8 +284,8 @@ if __name__ == "__main__":
     
     # Make a page with all the recipes
 
-    # holy variable naming
     all_recipes_list = []
+    # holy variable naming
     # this is a *different* recipes list
     for recipes_list in recipes.values():
         all_recipes_list += recipes_list
