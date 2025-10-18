@@ -45,6 +45,9 @@ class Item():
     tags:list[ItemTag] = field(default_factory=list)
     aliases:list[str] = field(default_factory=list)
     strifekind:StrifeKind = None
+    spawn:bool = None
+    speed:int = None
+
 
     def __init__(self,item_dict:dict[str]):
         self.id = item_dict.get('_id',"???")
@@ -56,6 +59,11 @@ class Item():
         self.spawnable = item_dict.get('Spawn',False)
         self.tags = item_dict.get('Tags',[])
         self.aliases = item_dict.get('Aliases',[])
+        # genuinely just guessing that if there isn't a spawn key on the item
+        # then it's unspawnable, from what i can tell there is a spawn key on
+        # every item so it's probably fine
+        self.spawn = item_dict.get('Spawn',False)
+        self.speed = item_dict.get("Speed")
         
         # prevents Nonekind from showing up
         strifekind = item_dict.get('Strifekind')
@@ -244,24 +252,38 @@ if __name__ == "__main__":
             article = f"#REDIRECT {item.as_wiki_link()}"
             articletitle = item.aliasName
         elif isinstance(item,Item):
+            item_recipes = recipes.get(item.id)
+
             # Image at top of page
             article = f"[[File:{item.name}.png|300x300px]]\n\n"
             # Item description
-            article += f"''\"{item.description}\"''\n"
+            article += f"''\"{item.description}\"''\n\n"
+            # Spawnable
+            if item.spawnable:
+                article += "Can be found in the world"
+                if item_recipes:
+                    article += " or obtained through alchemy"
+            else:
+                if item_recipes:
+                    article += "Can be obtained through alchemy"
+                else:
+                    article += "Only obtainable through commands"
+            article += "\n\n"
 
             # General item information
             article += "{| class='wikitable'\n"
             article += table_row("ID",item.id)
             article += table_row("Damage",item.damage)
+            article += table_row("Speed",item.speed)
             article += table_row("Tags",item.tags)
             article += table_row("Strifekind",item.strifekind)
             article += table_row("Aliases",item.aliases)
             article += "|}\n\n"
 
             # Recipes
-            if recipes.get(item.id):
+            if item_recipes:
                 article += "=== Crafted with ===\n"
-                article += create_recipe_table(recipes[item.id])
+                article += create_recipe_table(item_recipes)
 
             # Reverse recipes (what this can be used to craft)
             if reverse_recipes.get(item.id):
@@ -275,7 +297,7 @@ if __name__ == "__main__":
             if item.strifekind:
                 article += "[[Category:Strife]] "
                 article += f"[[Category:{item.strifekind.kind}kind]] "
-            if recipes.get(item.id):
+            if item_recipes:
                 article += "[[Category:Craftable]] "
             
             articletitle = item.name
