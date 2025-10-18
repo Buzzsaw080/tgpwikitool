@@ -40,7 +40,7 @@ class Item():
     id:str = "???"
     name:str = "???"
     description:str = "???"
-    grist:int = 0
+    damage:int = 0
     spawnable:bool = False
     tags:list[ItemTag] = field(default_factory=list)
     aliases:list[str] = field(default_factory=list)
@@ -50,7 +50,9 @@ class Item():
         self.id = item_dict.get('_id',"???")
         self.name = item_dict.get('Name',"???")
         self.description = item_dict.get('Description',"???")
-        self.grist = item_dict.get('Grist',0)
+        # why is the damage number called grist? dunno, don't care because
+        # i already worked it out
+        self.damage = item_dict.get('Grist',0)
         self.spawnable = item_dict.get('Spawn',False)
         self.tags = item_dict.get('Tags',[])
         self.aliases = item_dict.get('Aliases',[])
@@ -250,7 +252,7 @@ if __name__ == "__main__":
             # General item information
             article += "{| class='wikitable'\n"
             article += table_row("ID",item.id)
-            article += table_row("Grist",item.grist)
+            article += table_row("Damage",item.damage)
             article += table_row("Tags",item.tags)
             article += table_row("Strifekind",item.strifekind)
             article += table_row("Aliases",item.aliases)
