@@ -56,6 +56,7 @@ class Item():
     spawn:bool = None
     speed:int = None
     armor:bool = False
+    prototyping:str = None
 
 
     def __init__(self,item_dict:dict[str]):
@@ -72,6 +73,7 @@ class Item():
         self.tags = item_dict.get('Tags',[])
         self.aliases = item_dict.get('Aliases',[])
         self.speed = item_dict.get("Speed")
+        self.prototyping = item_dict.get('Prototyping')
         
         # prevents Nonekind from showing up
         strifekind = item_dict.get('Strifekind')
@@ -289,6 +291,7 @@ if __name__ == "__main__":
             # General item information
             article += "{| class='wikitable'\n"
             article += table_row("ID",item.id)
+            article += table_row("Prototype",item.prototyping)
             article += table_row("Defense" if item.armor else "Damage",item.damage)
             # i dont think speed has an effect on non-shoekind items because it doesn't
             # show in game, but i could be wrong, hopefully not
