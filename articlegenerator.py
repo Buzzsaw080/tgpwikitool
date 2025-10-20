@@ -48,7 +48,7 @@ class Item():
     id:str = "???"
     name:str = "???"
     description:str = "???"
-    damage:int = 0
+    grist:int = 0
     spawnable:bool = False
     tags:list[ItemTag] = field(default_factory=list)
     aliases:list[str] = field(default_factory=list)
@@ -63,9 +63,7 @@ class Item():
         self.id = item_dict.get('_id',"???")
         self.name = item_dict.get('Name',"???")
         self.description = item_dict.get('Description',"???")
-        # why is the damage number called grist? dunno, don't care because
-        # i already worked it out
-        self.damage = item_dict.get('Grist',0)
+        self.grist = item_dict.get('Grist',0)
         # genuinely just guessing that if there isn't a spawn key on the item
         # then it's unspawnable, from what i can tell there is a spawn key on
         # every item so it's probably fine
@@ -292,7 +290,8 @@ if __name__ == "__main__":
             article += "{| class='wikitable'\n"
             article += table_row("ID",item.id)
             article += table_row("Prototype",item.prototyping)
-            article += table_row("Defense" if item.armor else "Damage",item.damage)
+            article += table_row("Grist",item.grist)
+            article += table_row("Defense" if item.armor else "Damage",item.grist)
             # i dont think speed has an effect on non-shoekind items because it doesn't
             # show in game, but i could be wrong, hopefully not
             if not (item.armor and item.strifekind.kind == "shoes"):
