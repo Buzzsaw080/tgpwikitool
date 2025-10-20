@@ -6,7 +6,7 @@ The Genesis Project wiki tool (TGPWikiTool) is a tool that can automatically gen
 [Skip to the instructions](#usage)
 
 ## Examples
-Note: all of these examples are from a generic mediawiki instance, and so will not have the wiki.gg theming, also, this tool doesn't generate any images (which is probably the most annoying thing that should have been the one automated, but whatever)
+Note: all of these examples are from a generic mediawiki instance, and so will not have the wiki.gg theming, also, this tool doesn't generate any images so they will not be shown
 
 Main recipe page  
 <img width="938" height="764" alt="Screenshot_20251017_011401" src="https://github.com/user-attachments/assets/dfb378cf-9a07-40df-a444-3d915d0eecc5" />
