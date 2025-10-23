@@ -178,7 +178,7 @@ def get_recipe_ingredient(item:str) -> Union[Item, StrifeKind]:
 
 
 def create_recipe_table(recipes:list[Recipe]) -> str:
-    table = '''{| class="wikitable"
+    table = '''{| class="wikitable sortable"
 !Item A
 !Method
 !Item B
@@ -287,7 +287,7 @@ if __name__ == "__main__":
             article += "\n\n"
 
             # General item information
-            article += "{| class='wikitable'\n"
+            article += "{| class='wikitable sortable'\n"
             article += table_row("ID",item.id)
             article += table_row("Prototype",item.prototyping)
             article += table_row("Grist",item.grist)
