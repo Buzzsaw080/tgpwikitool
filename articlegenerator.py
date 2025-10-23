@@ -22,7 +22,7 @@ class StrifeKind():
         self.id = f"kind:{self.kind}"
 
     def as_wiki_link(self):
-        return f"[[:Category:{self.kind}kind | Any {self.kind}kind item]]"
+        return f"Any {self.kind}kind item"
 
     def __str__(self):
         return f"{self.kind}kind"
@@ -37,7 +37,7 @@ class ItemTag():
         self.id = f"tag:{self.tag}"
 
     def as_wiki_link(self):
-        return f"[[:Category:{self.tag} | Any {self.tag} item]]"
+        return f"Any {self.tag} item"
 
     def __str__(self):
         return self.tag
